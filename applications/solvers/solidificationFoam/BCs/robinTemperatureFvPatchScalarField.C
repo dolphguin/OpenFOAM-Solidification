@@ -55,8 +55,8 @@ Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(ptf, p, iF, mapper),
-    Tinf_(ptf.Tinf_, mapper),
-    h_(ptf.h_, mapper)
+    Tinf_(mapper(ptf.Tinf_)),
+    h_(mapper(ptf.h_))
 {}
 
 
@@ -119,9 +119,9 @@ void Foam::robinTemperatureFvPatchScalarField::autoMap
     const fvPatchFieldMapper& m
 )
 {
-    scalarField::autoMap(m);
-    Tinf_.autoMap(m);
-    h_.autoMap(m);
+    mixedFvPatchScalarField::autoMap(m);
+    m(Tinf_, Tinf_);
+    m(h_, h_);
 }
 
 
@@ -165,9 +165,9 @@ void Foam::robinTemperatureFvPatchScalarField::updateCoeffs()
 void Foam::robinTemperatureFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
-    Tinf_.writeEntry("Tinf", os);
-    h_.writeEntry("h", os);
-    writeEntry("value", os);
+    writeEntry(os, "Tinf", Tinf_);
+    writeEntry(os, "h", h_);
+    writeEntry(os, "value", *this);
 }
 
 
