@@ -40,6 +40,8 @@
 
   | [[applications/solvers/solidificationFoam][Solidification solver]] | Updated verions of the solidification solver |
   | [[tutorials/multiphase/solidificationFoam/SMACS_I][SMACS Benchmarks]] | Tutorial case for the SMACS numerical benchmark |
+  
+  (Output example from the SMACS benchmark)[[tutorials/multiphase/solidificationFoam/SMACS_I.gif]]
 
 * [[https://openfoam.org/resources][Documentation]]
 * [[https://cpp.openfoam.org/dev][Source code documentation]]
