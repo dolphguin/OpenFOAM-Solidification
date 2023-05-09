@@ -7,6 +7,22 @@
 #+OPTIONS: author:nil ^:{}
 # Copyright (c) 2018 OpenFOAM Foundation.
 
+* INITIAL NOTE
+  This is just a fork from [[https://github.com/OpenFOAM/OpenFOAM-Solidification]]
+  that I've started for private purposes. Mailny porting the code to other versions
+  & playing around with it, so do not expect any major modification from it.
+
+  Just for sake of clarity: There is no official endorsement for this initiative,
+  neither from the original authors nor from their supporting institutions. Similarly,
+  there is no warranty about the correctness of any material present at this fork,
+  so use it only under your own risk!
+
+  Lastly, remember to always keep track of the original authorships
+  ([[https://www.gnu.org/licenses/quick-guide-gplv3.html][GNU-GPLv3]]).
+
+ | *Output example from the SMACS benchmark (see [[./README.org#solidification-developments][below]])* |
+ | [[tutorials/multiphase/solidificationFoam/SMACS_I.gif]] |
+
 * About OpenFOAM
   OpenFOAM is a free, open source computational fluid dynamics (CFD) software
   package released by the OpenFOAM Foundation. It has a large user base across
