@@ -22,7 +22,6 @@
 
  | *Output example from the SMACS benchmark (see [[./README.org#solidification-developments][below]])* |
  | [[tutorials/multiphase/solidificationFoam/SMACS_I.gif]] |
- | [[tutorials/multiphase/solidificationFoam/SMACS_I_residuals.png]] |
 
 * About OpenFOAM
   OpenFOAM is a free, open source computational fluid dynamics (CFD) software
