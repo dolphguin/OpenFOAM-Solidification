@@ -1,60 +1,81 @@
-forAll(mesh.cells(), i)
 {
-    scalar Thigh = Tsol[i];
-    scalar Tlow  = Tsol[i];
+    // Artificial limits for eutectic reaction
+    volScalarField condition = pos0(C - Calpha);
 
-    // Aritifical limits for eutectic reaction
-    if (C[i] >= Calpha.value())
-    {
-        Thigh = Teut.value() + Tiso.value();
-        Tlow  = Teut.value() - Tiso.value();
-    }
+    volScalarField Thigh = Tsol + condition*(Teut + Tiso - Tsol);
+
+    volScalarField Tlow  = Tsol + condition*(Teut - Tiso - Tsol);
 
     // All liquid
-    if (T[i] >= Tliq[i])
+    condition = pos0(T - Tliq);
     {
-        alpha10[i] = 0.0;
+        alpha10 *= scalar(1) - condition;
 
-        dFdT[i] = 0.0;
-        T0[i] = T[i];
+        dFdT *= scalar(1) - condition;
+
+        T0 = T0 + condition*(T - T0);
     }
 
     // Primary solidification
-    if ((T[i] < Tliq[i]) && (T[i] > Thigh))
+    condition = pos(Tliq - T) * pos(T - Thigh);
     {
-        visitedEut[i] = 0;
+        visitedEut *= scalar(1) - condition;
 
-        dFdT[i] = (Tliq[i] - Tmelt.value()) / (sqr(T[i] - Tmelt.value()))
-          / (1.0 - kp.value());
+        dFdT = dFdT
+        + condition *
+        (
+            (Tliq - Tmelt) / (sqr(T - Tmelt)) / (scalar(1) - kp)
+        - dFdT
+        );
 
-
-        T0[i] = (Tliq[i] - alpha1[i]*(1.0 - kp.value())*Tmelt.value())
-          / (1.0 - alpha1[i]*(1.0 - kp.value()));
+        T0 = T0
+        + condition *
+        (
+            (Tliq - alpha1*(scalar(1) - kp)*Tmelt)
+          / (scalar(1) - alpha1*(scalar(1) - kp))
+        - T0
+        );
     }
 
     // Possible eutectic solidification (linear regression)
-    if ((T[i] <= Thigh) && (T[i] > Tlow))
     {
-        if (visitedEut[i] == 0)
+        condition.primitiveFieldRef() =
+            pos0(Thigh - T)*pos(T - Tlow)*neg(visitedEut - 0.5);
         {
-            alphaEut[i] = alpha1[i];
-            visitedEut[i] = 1;
+            alphaEut = alphaEut + condition*(alpha1 - alphaEut);
+
+            visitedEut = visitedEut + condition*(scalar(1) - visitedEut);
         }
 
-        dFdT[i] = (alphaEut[i] - 1.0) / (Thigh - Tlow);
+        condition = pos0(Thigh - T ) * pos(T - Tlow);
 
-        T0[i] = Tlow + (alpha1[i] - 1.0) / dFdT[i];
+        dFdT.primitiveFieldRef() = dFdT
+        + condition *
+        (
+            (alphaEut - scalar(1))
+           / stabilise(Thigh - Tlow, dimensionedScalar("", dimTemperature, small))
+        - dFdT
+        );
+
+        T0 = T0
+        + condition *
+        (
+            Tlow
+          + (alpha1 - scalar(1))
+          / stabilise(dFdT, dimensionedScalar("", dimless/dimTemperature, small))
+        - T0
+        );
     }
 
     // All solid
-    if (T[i] <= Tlow)
+    condition = pos0(Tlow - T);
     {
-        alpha10[i] = 1.0;
+        alpha10 = alpha10 + condition*(scalar(1) - alpha10);
 
-        dFdT[i] = 0.0;
-        T0[i] = T[i];
+        dFdT *= scalar(1) - condition;
+
+        T0 = T0 + condition*(T - T0);
     }
-
 }
 
 dFdT.correctBoundaryConditions();
