@@ -5,8 +5,8 @@ for (int tCorr=0; tCorr<nThermoCorr; tCorr++)
     volScalarField T0(T);
 
     // Update the freezing range
-    volScalarField Tliq(min(max(Tmelt + mliq*C, Teut), Tmelt));
-    volScalarField Tsol(min(max(Tmelt + msol*C, Teut), Tmelt));
+    Tliq = min(max(Tmelt + mliq*C, Teut), Tmelt);
+    Tsol = min(max(Tmelt + msol*C, Teut), Tmelt);
 
     #include "thermo/thermoSource.H"
     #include "thermo/TEqn.H"
