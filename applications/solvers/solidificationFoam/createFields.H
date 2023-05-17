@@ -122,6 +122,7 @@ if (p_rgh.needReference())
         p.dimensions(),
         pRefValue - getRefCellValue(p, pRefCell)
     );
+    p_rgh = p - rhok*gh;
 }
 
 mesh.setFluxRequired(p_rgh.name());
