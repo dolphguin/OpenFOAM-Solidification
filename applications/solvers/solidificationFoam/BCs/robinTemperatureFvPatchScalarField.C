@@ -40,8 +40,8 @@ Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
     Tinf_(p.size(), 0.0),
     h_(p.size(), 0.0)
 {
-    refValue() = 0.0;
-    refGrad() = 0.0;
+    refValue() = Zero;
+    refGrad() = Zero;
     valueFraction() = 0.0;
 }
 
@@ -72,7 +72,7 @@ Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
     h_("h", dict, p.size())
 {
     refValue() = Tinf_;
-    refGrad() = 0.0;
+    refGrad() = Zero;
     valueFraction() = 0.0;
 
     if (dict.found("value"))
