@@ -19,11 +19,11 @@ fvVectorMatrix UEqn
   + MRF.DDt(rho, U)
   - fvm::laplacian(rho*mu2/rho2, U)
  ==
-    fvOptions(rho, U)
+    fvModels.source(rho, U)
   - fvm::Sp(Kd, U)
 );
 UEqn.relax();
-fvOptions.constrain(UEqn);
+fvConstraints.constrain(UEqn);
 
 
 if (pimple.momentumPredictor())
@@ -41,5 +41,5 @@ if (pimple.momentumPredictor())
         )
     );
 
-    fvOptions.correct(U);
+    fvConstraints.constrain(U);
 }

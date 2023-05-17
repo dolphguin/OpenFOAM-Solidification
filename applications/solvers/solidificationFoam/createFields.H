@@ -103,16 +103,7 @@ volScalarField p
     p_rgh + rhok*gh
 );
 
-label pRefCell = 0;
-scalar pRefValue = 0.0;
-setRefCell
-(
-    p,
-    p_rgh,
-    pimple.dict(),
-    pRefCell,
-    pRefValue
-);
+pressureReference pressureReference(p, p_rgh, pimple.dict());
 
 if (p_rgh.needReference())
 {
@@ -120,11 +111,14 @@ if (p_rgh.needReference())
     (
         "p",
         p.dimensions(),
-        pRefValue - getRefCellValue(p, pRefCell)
+        pressureReference.refValue()
+      - getRefCellValue(p, pressureReference.refCell())
     );
+    p_rgh = p - rhok*gh;
 }
 
 mesh.setFluxRequired(p_rgh.name());
 
 #include "createMRF.H"
-#include "createFvOptions.H"
+#include "createFvModels.H"
+#include "createFvConstraints.H"

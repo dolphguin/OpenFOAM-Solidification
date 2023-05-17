@@ -30,7 +30,11 @@
           + fvc::div(phiHbyA)
         );
 
-        p_rghEqn.setReference(pRefCell, getRefCellValue(p_rgh, pRefCell));
+        p_rghEqn.setReference
+        (
+            pressureReference.refCell(),
+            getRefCellValue(p_rgh, pressureReference.refCell())
+        );
 
         p_rghEqn.solve();
 
@@ -42,7 +46,7 @@
 
             U = HbyA + rAU*fvc::reconstruct((phig - p_rghEqn.flux())/rAUf);
             U.correctBoundaryConditions();
-            fvOptions.correct(U);
+            fvConstraints.constrain(U);
         }
     }
 
@@ -54,7 +58,7 @@
         (
             "p",
             p.dimensions(),
-            pRefValue - getRefCellValue(p, pRefCell)
+          - getRefCellValue(p, pressureReference.refCell())
         );
         p_rgh = p - rhok*gh;
     }

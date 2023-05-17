@@ -48,20 +48,6 @@ Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
 
 Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
 (
-    const robinTemperatureFvPatchScalarField& ptf,
-    const fvPatch& p,
-    const DimensionedField<scalar, volMesh>& iF,
-    const fvPatchFieldMapper& mapper
-)
-:
-    mixedFvPatchScalarField(ptf, p, iF, mapper),
-    Tinf_(mapper(ptf.Tinf_)),
-    h_(mapper(ptf.h_))
-{}
-
-
-Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
-(
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
@@ -91,12 +77,15 @@ Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
 
 Foam::robinTemperatureFvPatchScalarField::robinTemperatureFvPatchScalarField
 (
-    const robinTemperatureFvPatchScalarField& tppsf
+    const robinTemperatureFvPatchScalarField& ptf,
+    const fvPatch& p,
+    const DimensionedField<scalar, volMesh>& iF,
+    const fvPatchFieldMapper& mapper
 )
 :
-    mixedFvPatchScalarField(tppsf),
-    Tinf_(tppsf.Tinf_),
-    h_(tppsf.h_)
+    mixedFvPatchScalarField(ptf, p, iF, mapper),
+    Tinf_(mapper(ptf.Tinf_)),
+    h_(mapper(ptf.h_))
 {}
 
 

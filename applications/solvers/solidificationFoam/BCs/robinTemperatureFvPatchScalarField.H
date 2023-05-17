@@ -112,22 +112,13 @@ public:
             const fvPatchFieldMapper&
         );
 
-        //- Construct as copy
+        //- Disallow copy without setting internal field reference
         robinTemperatureFvPatchScalarField
         (
             const robinTemperatureFvPatchScalarField&
-        );
+        ) = delete;
 
-        //- Construct and return a clone
-        virtual tmp<fvPatchScalarField> clone() const
-        {
-            return tmp<fvPatchScalarField>
-            (
-                new robinTemperatureFvPatchScalarField(*this)
-            );
-        }
-
-        //- Construct as copy setting internal field reference
+        //- Copy constructor setting internal field reference
         robinTemperatureFvPatchScalarField
         (
             const robinTemperatureFvPatchScalarField&,

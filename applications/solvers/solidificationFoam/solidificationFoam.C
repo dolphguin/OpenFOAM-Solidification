@@ -37,8 +37,10 @@ Description
 
 #include "fvCFD.H"
 #include "solidificationSystem.H"
-#include "fvOptions.H"
 #include "pimpleControl.H"
+#include "pressureReference.H"
+#include "fvModels.H"
+#include "fvConstraints.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
 
     Info<< "\nStarting time loop\n" << endl;
 
-    while (runTime.run())
+    while (pimple.run(runTime))
     {
         #include "readTimeControls.H"
         #include "CourantNo.H"
@@ -72,6 +74,8 @@ int main(int argc, char *argv[])
         // --- Pressure-velocity PIMPLE corrector loop
         while (pimple.loop())
         {
+            fvModels.correct();
+
             // --- Thermodyanmic loop
             #include "thermoLoop.H"
 
