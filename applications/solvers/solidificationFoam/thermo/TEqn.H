@@ -1,7 +1,7 @@
 {
     // Update mixture properties
     volScalarField Cp(fluid.Cp());
-    volScalarField kappa("kappa", fluid.kappa());
+    kappa = fluid.kappa();
 
     // Semi-implicit handling of eutectic reaction
     volScalarField Sp = rho2*L*dFdT/runTime.deltaT();

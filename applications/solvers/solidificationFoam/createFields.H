@@ -117,7 +117,7 @@ if (p_rgh.needReference())
     p_rgh = p - rhok*gh;
 }
 
-mesh.setFluxRequired(p_rgh.name());
+mesh.schemes().setFluxRequired(p_rgh.name());
 
 #include "createMRF.H"
 #include "createFvModels.H"

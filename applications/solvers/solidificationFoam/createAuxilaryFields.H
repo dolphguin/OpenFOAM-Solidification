@@ -98,3 +98,16 @@ volScalarField dFdT
     mesh,
     dimensionedScalar("dFdT", dimless/dimTemperature, 0.0)
 );
+
+volScalarField kappa
+(
+    IOobject
+    (
+        "kappa",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    fluid.kappa()
+);

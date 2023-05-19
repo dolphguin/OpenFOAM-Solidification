@@ -41,112 +41,112 @@ Foam::solidificationSystem::solidificationSystem
     const volVectorField& U
 )
 :
-    IOdictionary
+    Foam::twoPhaseMixture::IOdictionary
     (
         IOobject
         (
-            "transportProperties",
+            "phaseProperties",
             U.time().constant(),
             U.db(),
             IOobject::MUST_READ_IF_MODIFIED,
             IOobject::NO_WRITE
         )
     ),
-    twoPhaseMixture(U.mesh(), *this),
+    twoPhaseMixture(U.mesh()),
 
     rho1_
     (
         "rho",
         dimensionSet(1, -3, 0, 0, 0),
-        subDict(phase1Name_)
+        twoPhaseMixture::subDict(this->phase1Name())
     ),
     rho2_
     (
         "rho",
         dimensionSet(1, -3, 0, 0, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
 
     Cp1_
     (
         "Cp",
         dimensionSet(0, 2, -2, -1, 0),
-        subDict(phase1Name_)
+        twoPhaseMixture::subDict(this->phase1Name())
     ),
     Cp2_
     (
         "Cp",
         dimensionSet(0, 2, -2, -1, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
 
     kappa1_
     (
         "kappa",
         dimensionSet(1, 1, -3, -1, 0),
-        subDict(phase1Name_)
+        twoPhaseMixture::subDict(this->phase1Name())
     ),
     kappa2_
     (
         "kappa",
         dimensionSet(1, 1, -3, -1, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
 
     mu1_
     (
         "mu",
         dimensionSet(1, -1, -1, 0, 0),
-        subDict(phase1Name_)
+        twoPhaseMixture::subDict(this->phase1Name())
     ),
     mu2_
     (
         "mu",
         dimensionSet(1, -1, -1, 0, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
 
     D1_
     (
         "D",
         dimensionSet(0, 2, -1, 0, 0),
-        subDict(phase1Name_)
+        twoPhaseMixture::subDict(this->phase1Name())
     ),
     D2_
     (
         "D",
         dimensionSet(0, 2, -1, 0, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
     DAS_
     (
         "DAS",
         dimensionSet(0, 1, 0, 0, 0),
-        subDict(phase1Name_)
+        twoPhaseMixture::subDict(this->phase1Name())
     ),
     betaT_
     (
         "betaT",
         dimensionSet(0, 0, 0, -1, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
     betaC_
     (
         "betaC",
         dimensionSet(0, 0, 0, 0, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
     TRef_
     (
         "TRef",
         dimensionSet(0, 0, 0, 1, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
     CRef_
     (
         "CRef",
         dimensionSet(0, 0, 0, 0, 0),
-        subDict(phase2Name_)
+        twoPhaseMixture::subDict(this->phase2Name())
     ),
 
     U_(U)
@@ -157,31 +157,31 @@ Foam::solidificationSystem::solidificationSystem
 
 bool Foam::solidificationSystem::read()
 {
-    const dictionary& phaseDict1_(subDict(phase1Name_));
-    const dictionary& phaseDict2_(subDict(phase2Name_));
+    const dictionary& phaseDict1(twoPhaseMixture::subDict(this->phase1Name()));
+    const dictionary& phaseDict2(twoPhaseMixture::subDict(this->phase2Name()));
 
-    rho1_ = phaseDict1_.lookup("rho");
-    rho2_ = phaseDict2_.lookup("rho");
+    rho1_ = phaseDict1.lookup("rho");
+    rho2_ = phaseDict2.lookup("rho");
 
-    Cp1_ = phaseDict1_.lookup("Cp");
-    Cp2_ = phaseDict2_.lookup("Cp");
+    Cp1_ = phaseDict1.lookup("Cp");
+    Cp2_ = phaseDict2.lookup("Cp");
 
-    kappa1_ = phaseDict1_.lookup("kappa");
-    kappa2_ = phaseDict2_.lookup("kappa");
+    kappa1_ = phaseDict1.lookup("kappa");
+    kappa2_ = phaseDict2.lookup("kappa");
 
-    mu1_ = phaseDict1_.lookup("mu");
-    mu2_ = phaseDict2_.lookup("mu");
+    mu1_ = phaseDict1.lookup("mu");
+    mu2_ = phaseDict2.lookup("mu");
 
-    D1_ = phaseDict1_.lookup("D");
-    D2_ = phaseDict2_.lookup("D");
+    D1_ = phaseDict1.lookup("D");
+    D2_ = phaseDict2.lookup("D");
 
-    DAS_ = phaseDict1_.lookup("DAS");
+    DAS_ = phaseDict1.lookup("DAS");
 
-    betaT_ = phaseDict2_.lookup("betaT");
-    betaC_ = phaseDict2_.lookup("betaC");
+    betaT_ = phaseDict2.lookup("betaT");
+    betaC_ = phaseDict2.lookup("betaC");
 
-    TRef_ = phaseDict2_.lookup("TRef");
-    CRef_ = phaseDict2_.lookup("CRef");
+    TRef_ = phaseDict2.lookup("TRef");
+    CRef_ = phaseDict2.lookup("CRef");
 
     return true;
 }

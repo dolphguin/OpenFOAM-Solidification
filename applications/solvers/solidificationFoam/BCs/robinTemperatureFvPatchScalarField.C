@@ -137,15 +137,11 @@ void Foam::robinTemperatureFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    const scalarField& k_ =
+    const scalarField& kappa =
         patch().lookupPatchField<volScalarField, scalar>("kappa");
 
     valueFraction() =
-        1.0/
-        (
-            1.0
-          + k_*patch().deltaCoeffs()/h_
-        );
+        scalar(1) / (scalar(1) + kappa*patch().deltaCoeffs()/h_);
 
     mixedFvPatchScalarField::updateCoeffs();
 }

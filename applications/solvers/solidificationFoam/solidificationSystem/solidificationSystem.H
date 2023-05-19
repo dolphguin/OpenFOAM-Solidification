@@ -50,8 +50,8 @@ namespace Foam
 
 class solidificationSystem
 :
-    public IOdictionary,
-    public twoPhaseMixture
+    public virtual twoPhaseMixture::IOdictionary,
+    public virtual twoPhaseMixture
 {
 protected:
 
@@ -201,19 +201,19 @@ public:
         //- Return the mixture density
         virtual tmp<volScalarField> rho() const
         {
-            return alpha1_*rho1_ + alpha2_*rho2_;
+            return this->alpha1()*rho1_ + this->alpha2()*rho2_;
         }
 
         //- Return the mixture density
         virtual tmp<volScalarField> Cp() const
         {
-            return alpha1_*Cp1_ + alpha2_*Cp2_;
+            return this->alpha1()*Cp1_ + this->alpha2()*Cp2_;
         }
 
         //- Return the mixture density
         virtual tmp<volScalarField> kappa() const
         {
-            return alpha1_*kappa1_ + alpha2_*kappa2_;
+            return this->alpha1()*kappa1_ + this->alpha2()*kappa2_;
         }
 
         //- Read base transportProperties dictionary
